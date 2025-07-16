@@ -1,18 +1,23 @@
 package com.example.warehouse;
 
+import com.example.warehouse.config.ConfigLoader;
 import com.example.warehouse.handler.SensorHandlerFactory;
-import com.example.warehouse.receiver.HumidityReceiver;
+import com.example.warehouse.receiver.GenericUdpSensorReceiver;
 import com.example.warehouse.receiver.SensorReceiver;
-import com.example.warehouse.receiver.TemperatureReceiver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WarehouseApplication {
     public static void main(String[] args) {
-        List<SensorReceiver> receivers = List.of(
-                new TemperatureReceiver(SensorHandlerFactory.getHandler("http")),
-                new HumidityReceiver(SensorHandlerFactory.getHandler("mq"))
-        );
+        List<SensorReceiver> receivers = new ArrayList<>();
+
+        for (String sensorType : ConfigLoader.getSensorTypes()) {
+            int port = ConfigLoader.getSensorPort(sensorType);
+            String handlerKey = ConfigLoader.getSensorHandler(sensorType);
+
+            receivers.add(new GenericUdpSensorReceiver(port, SensorHandlerFactory.getHandler(handlerKey)));
+        }
 
         receivers.forEach(SensorReceiver::start);
     }

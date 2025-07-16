@@ -8,7 +8,7 @@ import java.net.URL;
 public class HttpSensorHandler implements SensorHandler {
     @Override
     public void handle(String message) {
-        System.out.println("Temp Handler received: " + message);
+        System.out.println("Http Handler received: " + message);
         forwardToMonitoringService(message);
     }
 
