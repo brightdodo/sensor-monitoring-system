@@ -131,5 +131,5 @@ project-root/
 
 ## 📄 License
 
-MIT License (or specify your own)
+This project is provided as-is for demonstration and educational purposes.
 
